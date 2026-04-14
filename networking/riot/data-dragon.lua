@@ -1,23 +1,30 @@
-local httpClient = require("riot.http-client")
-local imageLoader = require("riot.image-loader")
+local httpClient = require("networking.http-client")
 
 local dataDragon = {}
 local baseUrl = "https://ddragon.leagueoflegends.com/cdn/"
+local spritesCache = {}
+
+local function loadImageFromSpritesheet(spriteUrl, x, y, w, h)
+    if not spritesCache[spriteUrl] then
+        local raw = httpClient.getRaw(spriteUrl)
+        local fileData = love.filesystem.newFileData(raw, "sprite.png")
+        spritesCache[spriteUrl] = love.image.newImageData(fileData)
+    end
+
+    local sheet = spritesCache[spriteUrl]
+    local cropped = love.image.newImageData(w, h)
+    cropped:paste(sheet, 0, 0, x, y, w, h)
+    return love.graphics.newImage(cropped)
+end
 
 local function parseChampion(champion, version)
     local spriteUrl = baseUrl .. version .. "/img/sprite/" .. champion.image.sprite
     local championTagSet = {}
-    local tagSet = {}
 
-    for _, tag in ipairs(champion.tags) do
-        championTagSet[tag] = true
-        tagSet[tag] = true
-    end
-
-    return {
+    local championData = {
         id = champion.id,
         name = champion.name,
-        image = imageLoader.loadFromSpritesheet(
+        image = loadImageFromSpritesheet(
             spriteUrl,
             champion.image.x,
             champion.image.y,
@@ -26,6 +33,8 @@ local function parseChampion(champion, version)
         ),
         tagSet = championTagSet,
     }
+
+    return championData
 end
 
 function dataDragon.fetchLastPatch()
@@ -36,12 +45,17 @@ end
 function dataDragon.fetchChampions(version)
     local champions = httpClient.get(baseUrl .. version .. "/data/en_US/champion.json")
     local championList = {}
+    local tagSet = {}
 
     for _, championFull in pairs(champions.data) do
         table.insert(championList, parseChampion(championFull, version))
+
+        for _, tag in ipairs(championFull.tags) do
+            tagSet[tag] = true
+        end
     end
 
-    return championList
+    return championList, tagSet
 end
 
 return dataDragon

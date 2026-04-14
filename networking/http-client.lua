@@ -1,5 +1,5 @@
 local client = require("socket.http")
-local json = require("misc.json")
+local json = require("networking.json")
 
 local httpClient = {}
 
@@ -11,12 +11,11 @@ end
 function httpClient.getRaw(url)
     local body, code = client.request(url)
 
-    if code >= 200 and code < 300 then
+    if code == 200 then
         return body
     else
         error("HTTP request failed with code: " .. tostring(code) .. " and body: " .. body)
     end
-    
 end
 
 return httpClient
