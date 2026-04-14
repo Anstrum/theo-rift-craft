@@ -20,10 +20,10 @@ local color = {}
         table.insert(color.list, newColor)
     end
 
-    function color.set(name)
+    function color.set(name, alpha)
         for i = 1, #color.list do
             if color.name == name then
-                love.graphics.setColor(color.r, color.g, color.b, color.a)
+                love.graphics.setColor(color.r, color.g, color.b, alpha or color.a)
             end
         end
         -- error no color found --
@@ -35,7 +35,7 @@ local color = {}
                 return {color.r, color.g, color.b, color.a}
             end
         end
-        -- error no color found
+        -- error no color found --
         love.event.quit()
     end
 
@@ -44,11 +44,11 @@ local color = {}
             -- error color already initiated --
             love.event.quit()
         end
+        color.add("black", 0, 0, 0, 1)
         color.add("red", 1, 0, 0, 1)
         color.add("green", 0, 1, 0, 1)
         color.add("blue", 0, 0, 1, 1)
         color.add("white", 1, 1, 1, 1)
-        color.add("black", 0, 0, 0, 1)
         initiated = true
     end
 return color
