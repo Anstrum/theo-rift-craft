@@ -4,6 +4,7 @@ local json = require("misc.json")
 local gameData = {
     currentVersion = nil,
     champions = {},
+    tagSet = {},
 }
 
 function gameData.initialize()
