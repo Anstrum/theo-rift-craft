@@ -1,5 +1,4 @@
 local dataDragon = require("riot.data-dragon")
-local json = require("misc.json")
 
 local gameData = {
     currentVersion = nil,
@@ -9,6 +8,7 @@ local gameData = {
 
 function gameData.initialize()
     gameData.currentVersion = dataDragon.fetchLastPatch()
+    gameData.champions = dataDragon.fetchChampions(gameData.currentVersion)
 end
 
 return gameData

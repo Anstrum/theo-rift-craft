@@ -1,14 +1,11 @@
 local httpClient = require("riot.http-client")
+local imageLoader = require("riot.image-loader")
 
 local dataDragon = {}
 local baseUrl = "https://ddragon.leagueoflegends.com/cdn/"
 
-local function loadImage(championId, version)
-    local imageUrl = baseUrl .. version .. "/img/champion/" .. championId .. ".png"
-    return httpClient.getRaw(imageUrl)
-end
-
 local function parseChampion(champion, version)
+    local spriteUrl = baseUrl .. version .. "/img/sprite/" .. champion.image.sprite
     local championTagSet = {}
     local tagSet = {}
 
@@ -20,7 +17,13 @@ local function parseChampion(champion, version)
     return {
         id = champion.id,
         name = champion.name,
-        image = loadImage(champion.id, version),
+        image = imageLoader.loadFromSpritesheet(
+            spriteUrl,
+            champion.image.x,
+            champion.image.y,
+            champion.image.w,
+            champion.image.h
+        ),
         tagSet = championTagSet,
     }
 end
