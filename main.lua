@@ -8,10 +8,11 @@ function love.load()
     log.init()
     screen.init()
     colors.init()
+    log.print(log.types.INFO, "Load complete")
 end
 
 function love.update(dt)
-    log.print(log.types.ERROR, "test")
+    
 end
 
 function love.quit()

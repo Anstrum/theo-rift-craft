@@ -9,7 +9,7 @@ local screen = {}
 
     function screen.init()
         if initiated then
-            -- error color already initiated --
+            log.print(log.types.FATAL, "SCREEN SYSTEM ALREADY INITIATED")
             love.event.quit()
         end
 

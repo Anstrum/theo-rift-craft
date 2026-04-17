@@ -8,4 +8,6 @@ function initMisc()
     colors = require("misc/color")
     screen = require("misc/screen")
     debug = require("misc/debug")
+
+    log.print(log.types.INFO, "misc initiated")
 end
