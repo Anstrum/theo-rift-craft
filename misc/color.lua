@@ -9,7 +9,17 @@ local color = {}
     color.list.red = {1, 0, 0, 1}
     color.list.green = {0, 1, 0, 1}
     color.list.blue = {0, 0, 1, 1}
+
+    color.list.title_bt_background = {0.08, 0.09, 0.12, 1}
+    color.list.title_bt_border ={0.8, 065, 0.2, 1}
+    color.list.title_bt_hover ={1, 0.85, 0.3, 1}
     
+
+
+
+
+
+
     
     function color.set(color, alpha)
         if color == nil then
